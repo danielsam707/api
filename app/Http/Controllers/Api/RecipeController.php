@@ -10,11 +10,17 @@ class RecipeController extends Controller
 {
     public function index()
     {
-        return Recipe::all();
+
+        /**
+         * En este caso como si se crea una consulta desde cero si se puede trabajar con with
+         * pero no se trabaja con el metodo all() se trabaja con un metodo mas flexible que
+         * es get. Ya que al() trae toda la informacion.
+         */
+        return Recipe::with('category', 'tags', 'user')->get();
     }
 
     public function show(Recipe $recipe)
     {
-        return $recipe;
+        return $recipe->load('category', 'tags', 'user');
     }
 }
