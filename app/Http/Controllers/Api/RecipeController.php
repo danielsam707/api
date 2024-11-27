@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Recipe;
 use App\Http\Resources\RecipeResource;
 
+use Symfony\Component\HttpFoundation\Response;
+
 
 use Illuminate\Http\Request;
 
@@ -25,7 +27,16 @@ class RecipeController extends Controller
 
     public function store(Request $request)
     {
+        //Se va a hacer un sistema de asignacion masiva
+        $recipe = Recipe::create($request->all());
 
+        if ($tags = json_decode($request->tags))
+        {
+            $recipe->tags()->attach($tags);
+        }
+
+        //Retorno la respuesta a la aplicacion principal y tambine el mensaje
+        return response()->json(new RecipeResource($recipe),Response::HTTP_CREATED); //HTTP 201
     }
 
     public function show(Recipe $recipe)
@@ -36,11 +47,20 @@ class RecipeController extends Controller
 
     public function update(Request $request, Recipe $recipe)
     {
+        $recipe->update($request->all());
 
+        if ($tags = json_decode($request->tags))
+        {
+            $recipe->tags()->sync($tags);
+        }
+
+        //Retorno la respuesta a la aplicacion principal y tambine el mensaje
+        return response()->json(new RecipeResource($recipe),Response::HTTP_OK); //HTTP 200
     }
 
     public function destroy(Recipe $recipe)
     {
-
+        $recipe->delete();
+        return response()->json(null, Response::HTTP_NO_CONTENT);//204
     }
 }
