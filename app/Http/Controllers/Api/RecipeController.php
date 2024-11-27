@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Recipe;
+use App\Http\Resources\RecipeResource;
+
+
 use Illuminate\Http\Request;
 
 class RecipeController extends Controller
@@ -16,7 +19,8 @@ class RecipeController extends Controller
          * pero no se trabaja con el metodo all() se trabaja con un metodo mas flexible que
          * es get. Ya que al() trae toda la informacion.
          */
-        return Recipe::with('category', 'tags', 'user')->get();
+        $recipes = Recipe::with('category', 'tags', 'user')->get();
+        return RecipeResource::collection($recipes);
     }
 
     public function store(Request $request)
@@ -26,7 +30,8 @@ class RecipeController extends Controller
 
     public function show(Recipe $recipe)
     {
-        return $recipe->load('category', 'tags', 'user');
+        $recipe = $recipe->load('category', 'tags', 'user');
+        return RecipeResource($recipe);
     }
 
     public function update(Request $request, Recipe $recipe)
