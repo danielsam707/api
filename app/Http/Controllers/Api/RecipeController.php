@@ -31,7 +31,7 @@ class RecipeController extends Controller
     public function show(Recipe $recipe)
     {
         $recipe = $recipe->load('category', 'tags', 'user');
-        return RecipeResource($recipe);
+        return new RecipeResource($recipe);
     }
 
     public function update(Request $request, Recipe $recipe)
