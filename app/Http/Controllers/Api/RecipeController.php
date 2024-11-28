@@ -7,7 +7,8 @@ use App\Models\Recipe;
 use App\Http\Resources\RecipeResource;
 
 use Symfony\Component\HttpFoundation\Response;
-
+use App\Http\Requests\StoreRecipeRequest;
+use App\Http\Requests\UpdateRecipeRequest;
 
 use Illuminate\Http\Request;
 
@@ -25,15 +26,13 @@ class RecipeController extends Controller
         return RecipeResource::collection($recipes);
     }
 
-    public function store(Request $request)
+    public function store(StoreRecipeRequest $request)
     {
+
         //Se va a hacer un sistema de asignacion masiva
         $recipe = Recipe::create($request->all());
+        $recipe->tags()->attach($tags);
 
-        if ($tags = json_decode($request->tags))
-        {
-            $recipe->tags()->attach($tags);
-        }
 
         //Retorno la respuesta a la aplicacion principal y tambine el mensaje
         return response()->json(new RecipeResource($recipe),Response::HTTP_CREATED); //HTTP 201
@@ -45,7 +44,7 @@ class RecipeController extends Controller
         return new RecipeResource($recipe);
     }
 
-    public function update(Request $request, Recipe $recipe)
+    public function update(UpdateRecipeRequest $request, Recipe $recipe)
     {
         $recipe->update($request->all());
 
