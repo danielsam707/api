@@ -35,7 +35,7 @@ use App\Http\Controllers\Api\LoginController;
  * Route::get('tags/{tag}',            [TagController::class, 'show']);
  */
 
-Route::get('login', [LoginController::class, 'store']);
+Route::post('login', [LoginController::class, 'store']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
