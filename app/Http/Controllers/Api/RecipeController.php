@@ -30,8 +30,8 @@ class RecipeController extends Controller
     {
 
         //Se va a hacer un sistema de asignacion masiva
-        $recipe = $request->user()->recipes()->create($request->all());
-        $recipe->tags()->attach(json_decode($request->tags));
+        $recipe = $request->user()->recipes()->create($request->all()); // Se agrego el llamado a la relacion
+        $recipe->tags()->attach(json_decode($request->tags)); // Se corrigio
 
 
         //Retorno la respuesta a la aplicacion principal y tambine el mensaje
