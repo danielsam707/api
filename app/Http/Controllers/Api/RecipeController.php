@@ -37,6 +37,8 @@ class RecipeController extends Controller
         $recipe = $request->user()->recipes()->create($request->all()); // Se agrego el llamado a la relacion
         $recipe->tags()->attach(json_decode($request->tags)); // Se corrigio
 
+        $recipe->image = $request->file('image')->store('recipes', 'public');
+        $recipe->save();
 
         //Retorno la respuesta a la aplicacion principal y tambine el mensaje
         return response()->json(new RecipeResource($recipe),Response::HTTP_CREATED); //HTTP 201
@@ -52,6 +54,11 @@ class RecipeController extends Controller
     {
         $this->authorize('update', $recipe);
         $recipe->update($request->all());
+
+        if ($request->file('image')) {
+            $recipe->image = $request->file('image')->store('recipes', 'public');
+            $recipe->save();
+        }
 
         if ($tags = json_decode($request->tags))
         {
