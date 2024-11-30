@@ -2,19 +2,26 @@
 
 namespace Tests\Feature;
 
+//use GuzzleHttp\Psr7\UploadedFile;
+use Illuminate\Http\UploadedFile;
+
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;//para usar los fakers
+
+
 use Tests\TestCase;
 
 use Symfony\Component\HttpFoundation\Response; // para trabajar con las respuestas
 use App\Models\Recipe; // se importan los modelos que se  van a usar
 use App\Models\Category; // porque una recesa requiera de una categoria y como se cran datos de prueba por eso se necesita
 use App\Models\User; // este es porque se necesita un usuario para iniciar sesion
+use App\Models\Tag;
 use Laravel\Sanctum\Sanctum; // Esta es la tecnologia que utilizamos para iniciar sesion
 
 
 class RecipeTest extends TestCase
 {
-    use RefreshDatabase;// Trabajamos con la base de datos
+    use RefreshDatabase, WithFaker;// Trabajamos con la base de datos
     public function test_index(): void
     {
         Sanctum::actingAs(User::factory()->create());
@@ -68,6 +75,27 @@ class RecipeTest extends TestCase
         $response = $this->deleteJson('/api/recipes/' . $recipes->id);
         $response->assertStatus(Response::HTTP_NO_CONTENT);
 
+    }
+
+    public function test_store(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $category = Category::factory()->create();
+        $tag = Tag::factory()->create();
+
+        $data = [
+            'category_id' => $category->id,
+            'title' => $this->faker->sentence,
+            'description' => $this->faker->paragraph,
+            'ingredients' => $this->faker->text,
+            'instructions' => $this->faker->text,
+            'tags' => $tag->id,
+            'image' => UploadedFile::fake()->image('image.jpg'),
+        ];
+
+        $response = $this->postJson('/api/recipes/' , $data);
+        $response->assertStatus(Response::HTTP_CREATED);
     }
 
 }
