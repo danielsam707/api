@@ -22,6 +22,7 @@ class CategoryTest extends TestCase
         $response = $this->get('/api/categories');
 
         $response->assertJsonCount(2, 'data')
+                 ->assertStatus(Response::HTTP_OK)
                  ->assertJsonStructure([
                      'data' => [
                          [
