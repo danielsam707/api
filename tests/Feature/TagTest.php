@@ -18,7 +18,7 @@ class TagTest extends TestCase
     {
         Sanctum::actingAs(User::factory()->create());
 
-        $category = Tag::factory(2)->create();
+        $tag = Tag::factory(2)->create();
         $response = $this->get('/api/tags');
 
         $response->assertJsonCount(2, 'data')
