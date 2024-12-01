@@ -1,14 +1,18 @@
 <?php
 
-namespace Tests\Feature;
+namespace  Tests\Feature\Http\Controllers\Api\V1;
 
+use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Sanctum\Sanctum;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-use Symfony\Component\HttpFoundation\Response; // para trabajar con las respuestas
-use App\Models\Tag; // se importan los modelos que se  van a usar
-use App\Models\User; // este es porque se necesita un usuario para iniciar sesion
-use Laravel\Sanctum\Sanctum; // Esta es la tecnologia que utilizamos para iniciar sesion
+// para trabajar con las respuestas
+// se importan los modelos que se  van a usar
+// este es porque se necesita un usuario para iniciar sesion
+// Esta es la tecnologia que utilizamos para iniciar sesion
 
 
 class TagTest extends TestCase
@@ -19,7 +23,7 @@ class TagTest extends TestCase
         Sanctum::actingAs(User::factory()->create());
 
         $tag = Tag::factory(2)->create();
-        $response = $this->get('/api/tags');
+        $response = $this->get('/api/v1/tags');
 
         $response->assertJsonCount(2, 'data')
             ->assertStatus(Response::HTTP_OK)
@@ -43,7 +47,7 @@ class TagTest extends TestCase
 
         $tag = Tag::factory()->create();
 
-        $response = $this->get('/api/tags/' . $tag->id);
+        $response = $this->get('/api/v1/tags/' . $tag->id);
         $response->assertStatus(Response::HTTP_OK)//200
         ->assertJsonStructure([
             'data' => [

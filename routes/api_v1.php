@@ -1,13 +1,15 @@
 <?php
 
-use App\Http\Controllers\Api\LoginController;
+use App\Http\Controllers\Api\V1\CategoryController;
+use App\Http\Controllers\Api\V1\RecipeController;
+use App\Http\Controllers\Api\V1\TagController;
 use Illuminate\Support\Facades\Route;
 
 
 /**
-* Route::get('/user', function (Request $request) {
-    * return $request->user();
-* })->middleware('auth:sanctum');
+ * Route::get('/user', function (Request $request) {
+ * return $request->user();
+ * })->middleware('auth:sanctum');
  *
  * ESTA ES LA VERSION INDIVIDUAL DE LAS RUTAS
  * Route::get('recipes',               [RecipeController::class, 'index']); // Obtener todos los recursos (listar todas las recetas)
@@ -29,12 +31,15 @@ use Illuminate\Support\Facades\Route;
  * Route::get('tags/{tag}',            [TagController::class, 'show']);
  */
 
-Route::post('login', [LoginController::class, 'store']);
 
 
-Route::middleware('auth:sanctum')->group(function () {
-    require __DIR__ . '/api_v1.php';
+Route::prefix('v1')->group(function () {
+    Route::get('categories',            [CategoryController::class, 'index']);
+    Route::get('categories/{category}', [CategoryController::class, 'show']);
 
-    require __DIR__ . '/api_v2.php';
+    Route::apiResource('recipes',RecipeController::class);
+
+    Route::get('tags',                  [TagController::class, 'index']);
+    Route::get('tags/{tag}',            [TagController::class, 'show']);
 });
 

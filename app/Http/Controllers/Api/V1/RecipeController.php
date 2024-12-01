@@ -1,19 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Models\Recipe;
-use App\Http\Resources\RecipeResource;
-
-use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\StoreRecipeRequest;
 use App\Http\Requests\UpdateRecipeRequest;
+use App\Http\Resources\RecipeResource;
+use App\Models\Recipe;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Symfony\Component\HttpFoundation\Response;
 
-use Illuminate\Http\Request;
-use App\Policies\RecipePolicy;
-
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests; // si esto no puedo usar la policy
+// si esto no puedo usar la policy
 
 class RecipeController extends Controller
 {

@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Models\Tag;
 use App\Http\Resources\TagResource;
-
-use Illuminate\Http\Request;
+use App\Models\Tag;
 
 class TagController extends Controller
 {
