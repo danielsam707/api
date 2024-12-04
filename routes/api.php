@@ -36,5 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
     require __DIR__ . '/api_v1.php';
 
     require __DIR__ . '/api_v2.php';
+
+    require __DIR__ . '/api_v3.php';
 });
 
