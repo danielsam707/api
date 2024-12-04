@@ -6,6 +6,9 @@ use App\Http\Controllers\Api\V3\ForeignController;
 
 
 Route::prefix('v3')->group(function () {
-    Route::get('foreign_recipes/categories', [ForeignController::class, 'index']);
-    Route::get('foreign_recipes/name_id', [ForeignController::class, 'show']);
+    Route::get('recipes/dynamic_list', [ForeignController::class, 'showListDynamic']);
+    Route::get('recipes', [ForeignController::class, 'showRecipes']);
+    Route::get('recipes/categories', [ForeignController::class, 'showCategories']);
+    Route::get('recipes/areas', [ForeignController::class, 'showAreas']);
+    Route::get('recipes/ingredients', [ForeignController::class, 'showIngredients']);
 });

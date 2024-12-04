@@ -49,6 +49,7 @@ class RecipeController extends Controller
 
     public function update(UpdateRecipeRequest $request, Recipe $recipe)
     {
+        dd($recipe);
         $this->authorize('update', $recipe);
         $recipe->update($request->all());
 
