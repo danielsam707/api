@@ -7,71 +7,79 @@ use Illuminate\Support\Facades\Http;
 
 class ForeignController extends Controller
 {
-    public function index()
+    public function showById($id)
     {
-        // URL de la API
-        $url = 'https://www.themealdb.com/api/json/v1/1/aleatorselection.php';
+        $url = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=' . $id;
+        return $this->fetchDataFromApi($url);
+    }
 
+    public function showByName($name)
+    {
+        $url = 'https://www.themealdb.com/api/json/v1/1/search.php?s=' . $name;
+        return $this->fetchDataFromApi($url);
+    }
+
+    // Método general para obtener datos de la API
+    private function fetchDataFromApi($url)
+    {
         // Realizamos la solicitud GET a la API pública usando el cliente HTTP de Laravel
         $response = Http::get($url);
 
-        // Verificamos si la solicitud fue exitosa
         if ($response->successful()) {
+            // Decodificamos la respuesta JSON
             $data = $response->json();
-
-            // Organizar y formatear la respuesta
-            $formattedData = $this->formatResponse($data);
-
-            return response()->json($formattedData);
+            return response()->json($data);
         } else {
-            // Si la solicitud falla, devolver un error
             return response()->json(['error' => 'No se pudo obtener datos de la API'], 500);
         }
     }
 
-    // Método para formatear la respuesta
-    private function formatResponse($data)
+    public function show()
     {
-        // Verificamos si existe la clave "meals" en la respuesta
-        if (isset($data['meals']) && count($data['meals']) > 0) {
-            $meal = $data['meals'][0]; // Suponiendo que la respuesta contiene solo una receta aleatoria
+        $id = request()->query('i');  // Capturamos el parámetro 'i' desde la URL
+        $name = request()->query('s');  // Capturamos el parámetro 's' desde la URL
 
-            // Extraemos y reestructuramos los datos que nos interesan
-            return [
-                'meal_id' => $meal['idMeal'],
-                'meal_name' => $meal['strMeal'],
-                'category' => $meal['strCategory'],
-                'area' => $meal['strArea'],
-                'instructions' => $meal['strInstructions'],
-                'image' => $meal['strMealThumb'],
-                'youtube' => $meal['strYoutube'],
-                'ingredients' => $this->getIngredients($meal),
-                'source' => $meal['strSource']
-            ];
+        // Validamos los parámetros de entrada
+        if (!$id && !$name) {
+            return response()->json(['error' => 'ID o nombre no proporcionados'], 400);
         }
 
-        return ['message' => 'No se encontraron recetas disponibles.'];
+        // Lógica para determinar qué URL usar dependiendo de los parámetros
+        if ($id) {
+            return $this->showById($id);  // Busca por ID
+        }
+
+        if ($name) {
+            return $this->showByName($name);  // Busca por nombre
+        }
+
+        // En caso de que ocurra un error no esperado
+        return response()->json(['error' => 'Error al insertar parámetros'], 400);
     }
 
-    // Método para obtener los ingredientes y sus cantidades
-    private function getIngredients($meal)
+    public function index()
     {
-        $ingredients = [];
+        // URL de la API
+        $url = 'https://www.themealdb.com/api/json/v1/1/categories.php';
 
-        // Recorremos los ingredientes y sus cantidades
-        for ($i = 1; $i <= 20; $i++) {
-            $ingredient = $meal['strIngredient' . $i];
-            $measure = $meal['strMeasure' . $i];
+        // Realizamos la solicitud GET a la API pública usando el cliente HTTP de Laravel
+        $response = Http::get($url);
 
-            // Si ambos valores no están vacíos, los añadimos
-            if (!empty($ingredient) && !empty($measure)) {
-                $ingredients[] = [
-                    'ingredient' => $ingredient,
-                    'measure' => $measure
-                ];
+        if ($response->successful()) {
+            // Decodificamos la respuesta JSON
+            $data = $response->json();
+            //dd($data);
+
+
+            // Verificamos si la clave 'meals' existe en los datos
+            if (isset($data['categories'])) {
+                // Devolvemos los datos de la API (una lista de recetas)
+                return response()->json($data['categories']);
+            } else {
+                return response()->json(['error' => 'No se encontraron categorías'], 404);
             }
+        } else {
+            return response()->json(['error' => 'No se pudo obtener datos de la API'], 500);
         }
-
-        return $ingredients;
     }
 }
