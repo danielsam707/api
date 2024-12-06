@@ -120,19 +120,19 @@ class ForeignController extends Controller
         }
     }
 
-    public function ShowForCategories($categories)
+    public function ShowByCategories($categories)
     {
         $url = 'https://www.themealdb.com/api/json/v1/1/filter.php?c='.$categories;
         return $this->fetchColletionFromApi($url);
     }
 
-    public function ShowForLetters($letter)
+    public function ShowByLetters($letter)
     {
         $url = 'https://www.themealdb.com/api/json/v1/1/search.php?f='.$letter;
         return $this->fetchColletionFromApi($url);
     }
 
-    public function ShowForArea($area)
+    public function ShowByArea($area)
     {
         $url = 'https://www.themealdb.com/api/json/v1/1/filter.php?a='.$area;
         return $this->fetchColletionFromApi($url);

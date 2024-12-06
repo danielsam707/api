@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateRecipeRequest;
 use App\Http\Resources\RecipeResource;
 use App\Models\Recipe;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 // si esto no puedo usar la policy
@@ -49,7 +50,6 @@ class RecipeController extends Controller
 
     public function update(UpdateRecipeRequest $request, Recipe $recipe)
     {
-        dd($recipe);
         $this->authorize('update', $recipe);
         $recipe->update($request->all());
 
