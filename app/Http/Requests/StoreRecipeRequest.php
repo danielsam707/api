@@ -27,7 +27,6 @@ class StoreRecipeRequest extends FormRequest
             'description'  => 'required',
             'ingredients'  => 'required',
             'instructions' => 'required',
-            'image'        => 'required|mimes:jpg,jpeg,png',
             'tags'        => 'required',
         ];
     }

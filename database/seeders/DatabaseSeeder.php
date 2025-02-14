@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
 
         Category::factory(12)->create();
         Recipe::factory(100)->create();
-        Tag::factory(40)->create();
+        Tag::factory(6)->create();
 
         //Many to many
         $recipes = Recipe::all();

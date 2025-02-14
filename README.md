@@ -1,66 +1,165 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🍽️ Recetas API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+API desarrollada en Laravel 11 para la gestión de recetas, como parte del proceso de aprendizaje en la empresa. Este proyecto utiliza datos generados con Faker y Seeder de Laravel para poblar la base de datos, además de integrar recetas obtenidas de una API pública. Se espera conectar con un proyecto de Angular como parte del proceso de aprendizaje en la empresa.
 
-## About Laravel
+Este proyecto se desarrolló basándose en el curso de API REST con Laravel de Platzi y otros cursos adicionales que ayudaron a mejorarla. La API es uno de los proyectos finales de una ruta de aprendizaje propuesta por el líder de desarrollos específicos.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🚀 Características
+- CRUD de recetas con autenticación mediante tokens (Laravel Sanctum).
+- Consumo de una API pública de recetas mediante Guzzle.
+- Uso de Laravel Telescope para monitoreo.
+- Datos estructurados en versiones de API.
+- Base de datos MySQL administrada con phpMyAdmin.
+- Cuenta con un usuario creado por defecto para facilitar el uso de la API.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📌 Tecnologías utilizadas
+- **Framework**: Laravel 11
+- **Base de datos**: MySQL (phpMyAdmin en desarrollo)
+- **Autenticación**: Laravel Sanctum
+- **Cliente HTTP**: Guzzle
+- **Monitoreo**: Laravel Telescope
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 📦 Instalación
 
-## Learning Laravel
+### 1️⃣ Clonar el repositorio
+```bash
+git clone https://github.com/tuusuario/nombre-del-repositorio.git
+cd nombre-del-repositorio
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 2️⃣ Instalar dependencias
+```bash
+composer install
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 3️⃣ Configurar variables de entorno
+Copiar el archivo de entorno y configurarlo según tu entorno:
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Configura en el archivo `.env` las credenciales de base de datos y de la API pública si es necesario.
 
-## Laravel Sponsors
+### 4️⃣ Ejecutar migraciones y seeders
+```bash
+php artisan migrate --seed
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+> **Nota:** Se genera un usuario por defecto con las siguientes credenciales:
+> - **Email:** i@admin.com
+> - **Contraseña:** password
+> - Las contraseñas están cifradas de manera segura con Hash::make.
 
-### Premium Partners
+### 5️⃣ Iniciar el servidor de desarrollo
+```bash
+php artisan serve
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+## 🛠️ Uso de la API
 
-## Contributing
+### 📌 Autenticación
+La API requiere autenticación mediante tokens. Para obtener un token, usa el siguiente endpoint:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```http
+POST /api/login
+```
 
-## Code of Conduct
+**Ejemplo de respuesta:**
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Incluye el token en cada solicitud protegida con el encabezado:
+```http
+Authorization: Bearer {token}
+```
 
-## Security Vulnerabilities
+### 📌 Endpoints principales
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+#### 🔹 Versión 1 (CRUD de recetas, categorías y etiquetas)
+```http
+GET /api/v1/categories
+GET /api/v1/categories/{category}
+GET /api/v1/tags
+GET /api/v1/tags/{tag}
+```
+CRUD completo de recetas:
+```http
+GET /api/v1/recipes
+POST /api/v1/recipes
+GET /api/v1/recipes/{id}
+PUT /api/v1/recipes/{id}
+DELETE /api/v1/recipes/{id}
+```
 
-## License
+#### 🔹 Versión 2 (Lista de recetas de usuario)
+```http
+GET /api/v2/recipes
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Ejemplo de respuesta:
+```json
+{
+  "data": [
+    {
+      "id": 116,
+      "type": "recipe",
+      "attributes": {
+        "category": "Postre",
+        "author": "Juan Pérez",
+        "title": "Tarta de Chocolate",
+        "description": "Deliciosa tarta de chocolate casera.",
+        "ingredients": "Harina, azúcar, huevos, chocolate...",
+        "instructions": "Mezclar ingredientes, hornear a 180°C por 30 min...",
+        "image": "recipes/tarta_chocolate.jpg",
+        "tags": "Dulce, Chocolate"
+      }
+    }
+  ]
+}
+```
+
+#### 🔹 Versión 3 (Consumo de API pública de recetas)
+```http
+GET /api/v3/recipes/dynamic_list
+GET /api/v3/recipes
+GET /api/v3/recipes/categories
+GET /api/v3/recipes/areas
+GET /api/v3/recipes/ingredients
+```
+
+## 🌐 Consumo de API externa
+La API pública de recetas se consume a través de un controlador específico. Los datos obtenidos no se combinan con los datos internos, sino que se entregan tal cual como se reciben. Los endpoints disponibles de la API pública son:
+
+**Listar categorías, áreas e ingredientes:**
+- `GET https://www.themealdb.com/api/json/v1/1/list.php?c=list`
+- `GET https://www.themealdb.com/api/json/v1/1/list.php?a=list`
+- `GET https://www.themealdb.com/api/json/v1/1/list.php?i=list`
+
+**Filtrar por ingrediente, categoría o área:**
+- `GET https://www.themealdb.com/api/json/v1/1/filter.php?i=chicken_breast`
+- `GET https://www.themealdb.com/api/json/v1/1/filter.php?c=Seafood`
+- `GET https://www.themealdb.com/api/json/v1/1/filter.php?a=Canadian`
+
+**Otros endpoints:**
+- `GET https://www.themealdb.com/api/json/v1/1/categories.php`
+- `GET https://www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata`
+- `GET https://www.themealdb.com/api/json/v1/1/search.php?f=a`
+- `GET https://www.themealdb.com/api/json/v1/1/lookup.php?i=52772`
+- `GET https://www.themealdb.com/api/json/v1/1/random.php`
+
+## 🔥 Próximas mejoras
+- Implementación de filtros avanzados para recetas.
+- Posibilidad de subir imágenes personalizadas.
+- Mejoras en la documentación con Swagger.
+
+## 📝 Licencia
+Este proyecto está bajo la Licencia MIT.
+
+## 📞 Contacto
+- **Desarrollador:** Daniel Arias
+- **Correo:** danielsam707@gmail.com
+

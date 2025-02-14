@@ -71,6 +71,6 @@ class RecipeController extends Controller
     {
         $this->authorize('delete', $recipe);
         $recipe->delete();
-        return response()->json(null, Response::HTTP_NO_CONTENT);//204
+        return response()->json(['message'=> 'Receta eliminado.'], Response::HTTP_NO_CONTENT);//204
     }
 }
